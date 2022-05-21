@@ -20,6 +20,13 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
     coluna += strlen(yytext);
 }
 
+{ID}+ {
+    if(comentarioAUX == 0){
+        printf("identificador: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
+
 {DIGITO}+"."{DIGITO}* {
     if(comentarioAUX == 0){
         printf( "Real: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
@@ -36,21 +43,21 @@ bool|int|float|char|double {
 
 "+"|"-"|or {
      if(comentarioAUX == 0){
-        printf("operação de adição ou ou: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+        printf("operação de adição ou or: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "*"|"/"|and {
     if(comentarioAUX == 0){
-        printf("operação de multiplicação ou "and": ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+        printf("operação de multiplicação ou and: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "("|")" {
     if(comentarioAUX == 0){
-        printf("parenteses": ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+        printf("parenteses: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -133,12 +140,18 @@ return|print {
     coluna += strlen(yytext);
 } 
 
-. {
-    if(comentarioAUX == 0){
-        printf( "Caracter não reconhecido: %s, len: %zu encontrado em ( %d : %d )\n",yytext,strlen(yytext),linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
+" " {
+     
+    coluna ++;
+} 
+
+[\n]+ {
+     if(comentarioAUX == 0){
+		printf("quebra de linha\n");
+	}
+	linha++;
+	coluna = 1;
+} 
 
 %%
 
