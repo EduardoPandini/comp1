@@ -36,7 +36,7 @@ bool|int|float|char|double {
 
 "+"|"-"|or {
      if(comentarioAUX == 0){
-        printf("operação de adição ou "ou": ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+        printf("operação de adição ou ou: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -132,6 +132,13 @@ return|print {
     }
     coluna += strlen(yytext);
 } 
+
+. {
+    if(comentarioAUX == 0){
+        printf( "Caracter não reconhecido: %s, len: %zu encontrado em ( %d : %d )\n",yytext,strlen(yytext),linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
 
 %%
 
