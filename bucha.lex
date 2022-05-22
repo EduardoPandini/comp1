@@ -44,6 +44,19 @@ return|print {
     }
     coluna += strlen(yytext);
 }
+while|for {
+     if(comentarioAUX == 0){
+        printf("laco de repeticao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
+
+if|else {
+     if(comentarioAUX == 0){
+        printf("operador logico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
 {ID}+ {
     if(comentarioAUX == 0){
         printf("identificador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
@@ -115,19 +128,7 @@ return|print {
     coluna += strlen(yytext);
 }
 
-while|for {
-     if(comentarioAUX == 0){
-        printf("laco de repeticao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
 
-if|else {
-     if(comentarioAUX == 0){
-        printf("operador logico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
 
 "//"({TEXTO}|.)* {
     if(comentarioAUX == 0){
