@@ -38,7 +38,7 @@ bool|int|float|char|double {
     }
     coluna += strlen(yytext);
 }
-return|print {
+return|print|read {
     if(comentarioAUX == 0){
         printf("palavra reservada: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
     }
@@ -152,12 +152,7 @@ if|else {
     }
     coluna += strlen(yytext);
 }
-return|print {
-    if(comentarioAUX == 0){
-        printf("palavra reservada: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
+
 
 
 
