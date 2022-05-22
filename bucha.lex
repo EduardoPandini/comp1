@@ -22,19 +22,19 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
 } 
 bool|int|float|char|double {
      if(comentarioAUX == 0){
-        printf("Tipo simples: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("Tipo simples: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 {DIGITO}+ {
     if(comentarioAUX == 0){
-        printf("Inteiro: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("Inteiro: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 "FALSE"|"TRUE" {
     if(comentarioAUX == 0){
-        printf("valor booleano: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("valor booleano: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -46,7 +46,7 @@ return|print {
 }
 {ID}+ {
     if(comentarioAUX == 0){
-        printf("identificador: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("identificador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -60,48 +60,48 @@ return|print {
 
 "+"|"-"|or {
      if(comentarioAUX == 0){
-        printf("operação de adição ou or: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("operação de adição ou or: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "*"|"/"|and {
     if(comentarioAUX == 0){
-        printf("operação de multiplicação ou and: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("operação de multiplicação ou and: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "("|")" {
     if(comentarioAUX == 0){
-        printf("parenteses: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("parenteses: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "["|"]" {
     if(comentarioAUX == 0){
-        printf("colchetes: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("colchetes: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "{"|"}" { 
     if(comentarioAUX == 0){
-        printf("chaves: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("chaves: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "!"|"@"|"#"|"$"|"%"|"&"|":" { 
     if(comentarioAUX == 0){
-        printf("outro tipo: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("outro tipo: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 "<"|">"|"<="|">="|"<>"|"==" {
     if(comentarioAUX == 0){
-        printf("comparador: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("comparador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -110,21 +110,21 @@ return|print {
 
 "=" {
     if(comentarioAUX == 0){
-        printf("definicao de valor: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("definicao de valor: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 while|for {
      if(comentarioAUX == 0){
-        printf("laco de repeticao: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("laco de repeticao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 if|else {
      if(comentarioAUX == 0){
-        printf("operador logico: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("operador logico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -175,7 +175,7 @@ return|print {
 
 "."|"," { 
     if(comentarioAUX == 0){
-        printf("divisor: %s localizado em ( %d : %d )\n", yytext,,linha,coluna );
+        printf("divisor: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
     }
     coluna += strlen(yytext);
 }
