@@ -8,18 +8,36 @@ int comentarioAUX=0;
 
 
 DIGITO [0-9]
-ID [A-Za-z][A-Za-z0-9]*
+ID [A-Za-z][A-Za-z0-9_]*
 TEXTO [A-Za-z0-9][A-Za-z0-9]*
 
 %%
 
+
+";" {
+     if(comentarioAUX == 0){
+        printf("Ponto e virgula: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+    }
+    coluna += strlen(yytext);
+} 
+bool|int|float|char|double {
+     if(comentarioAUX == 0){
+        printf("Tipo simples: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
 {DIGITO}+ {
     if(comentarioAUX == 0){
         printf("Inteiro: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
     coluna += strlen(yytext);
 }
-
+"FALSE"|"TRUE" {
+    if(comentarioAUX == 0){
+        printf("valor booleano: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
 {ID}+ {
     if(comentarioAUX == 0){
         printf("identificador: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
@@ -30,13 +48,6 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
 {DIGITO}+"."{DIGITO}* {
     if(comentarioAUX == 0){
         printf( "Real: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
-
-bool|int|float|char|double {
-     if(comentarioAUX == 0){
-        printf("Tipo simples: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
     coluna += strlen(yytext);
 }
@@ -76,6 +87,12 @@ bool|int|float|char|double {
     coluna += strlen(yytext);
 }
 
+"!"|"@"|"#"|"$"|"%"|"&"|":" { 
+    if(comentarioAUX == 0){
+        printf("outro tipo: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
 "<"|">"|"<="|">="|"<>"|"==" {
     if(comentarioAUX == 0){
         printf("comparador: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
@@ -83,7 +100,9 @@ bool|int|float|char|double {
     coluna += strlen(yytext);
 }
 
-":=" {
+
+
+"=" {
     if(comentarioAUX == 0){
         printf("definicao de valor: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
     }
@@ -133,12 +152,7 @@ return|print {
     coluna += strlen(yytext);
 }
 
-";" {
-     if(comentarioAUX == 0){
-        printf("Ponto e virgula: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
-    }
-    coluna += strlen(yytext);
-} 
+
 
 " " {
      
@@ -152,6 +166,13 @@ return|print {
 	linha++;
 	coluna = 1;
 } 
+
+"."|"," { 
+    if(comentarioAUX == 0){
+        printf("divisor: ,%s, ,%zu, (%d) localizado em ( %d : %d )\n", yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
 
 %%
 
