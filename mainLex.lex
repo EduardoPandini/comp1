@@ -168,6 +168,13 @@ if|else {
     coluna += strlen(yytext);
 }
 
+. { 
+    if(comentarioAUX == 0){
+        printf("caracter nao reconhecido: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    }
+    coluna += strlen(yytext);
+}
+
 %%
 
 int main( argc, argv )
