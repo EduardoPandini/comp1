@@ -59,7 +59,7 @@ void|char|short|int|long|float|double|signed|unsigned {
 
 {DIGITO}+ {
     if(comentarioAUX == 0){
-        parse_print("Inteiro: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Inteiro: ",yytext);
         return INTEIRO;
     }else{
         return COMENTARIO_T;
@@ -87,7 +87,7 @@ print|read {
 }
 while {
      if(comentarioAUX == 0){
-        parse_print("laco WHILE: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("laco WHILE: ",yytext);
         return LACO_WHILE;
     }else{
         return COMENTARIO_T;
@@ -96,7 +96,7 @@ while {
 }
 for {
      if(comentarioAUX == 0){
-        parse_print("laco FOR: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("laco FOR: ",yytext);
         return LACO_FOR;
     }else{
         return COMENTARIO_T;
@@ -106,7 +106,7 @@ for {
 
 when {
     if(comentarioAUX == 0){
-    parse_print("Seletor when: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    parse_print("Seletor when: ",yytext);
         return T_SWITCH;
     }else{
         return COMENTARIO_T;
@@ -116,7 +116,7 @@ when {
 
 if {
      if(comentarioAUX == 0){
-        parse_print("operador logico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operador logico: ",yytext);
         return OP_LOGICO;
     }else{
         return COMENTARIO_T;
@@ -126,7 +126,7 @@ if {
 
 else {
      if(comentarioAUX == 0){
-        parse_print("condicional else: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("condicional else: ",yytext);
         return OP_ELSE;
     }else{
         return COMENTARIO_T;
@@ -135,7 +135,7 @@ else {
 }
 do {
     if(comentarioAUX == 0){
-        parse_print("Laço: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Laço: ",yytext);
         return OPERADOR_DO;
     }else{
         return COMENTARIO_T;
@@ -145,7 +145,7 @@ do {
 
 const {
     if(comentarioAUX == 0){
-        parse_print("Constante: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Constante: ",yytext);
     return T_CONST;
     }else{
         return COMENTARIO_T;
@@ -155,7 +155,7 @@ const {
 
 {ID}+ {
     if(comentarioAUX == 0){
-        parse_print("identificador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("identificador: ",yytext);
         return IDENTIFICADOR;
     }else{
         return COMENTARIO_T;
@@ -184,7 +184,7 @@ const {
 
 "++"|"--" {
     if(comentarioAUX == 0){
-        parse_print("Incremento: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Incremento: ",yytext);
     return T_INCREMENT;
     }else{
         return COMENTARIO_T;
@@ -194,7 +194,7 @@ const {
 
 "+" {
      if(comentarioAUX == 0){
-        parse_print("operação de adição: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de adição: ",yytext);
         return OPERACAO_AD;
     }else{
         return COMENTARIO_T;
@@ -204,7 +204,7 @@ const {
 
 "-" {
      if(comentarioAUX == 0){
-        parse_print("operação de subtracao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de subtracao: ",yytext);
         return OPERACAO_SUB;
     }else{
         return COMENTARIO_T;
@@ -214,7 +214,7 @@ const {
 
 "*" {
     if(comentarioAUX == 0){
-        parse_print("operação de multiplicação: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de multiplicação: ",yytext);
         return OPERACAO_MULT;
     }else{
         return COMENTARIO_T;
@@ -224,7 +224,7 @@ const {
 
 "/" {
     if(comentarioAUX == 0){
-        parse_print("operação de divisao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de divisao: ",yytext);
         return OPERACAO_DIV;
     }else{
         return COMENTARIO_T;
@@ -235,7 +235,7 @@ const {
 
 "(" {
     if(comentarioAUX == 0){
-        parse_print("ABERTURA DE parenteses: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("ABERTURA DE parenteses: ",yytext);
         return ABRE_PAR;
     }else{
         return COMENTARIO_T;
@@ -245,7 +245,7 @@ const {
 
 ")" {
     if(comentarioAUX == 0){
-        parse_print("parenteses: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("parenteses: ",yytext);
         return FECHA_PAR;
     }else{
         return COMENTARIO_T;
@@ -254,7 +254,7 @@ const {
 }
 "[" {
     if(comentarioAUX == 0){
-        parse_print("abre colchetes: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("abre colchetes: ",yytext);
         return ABRE_COL;
     }else{
         return COMENTARIO_T;
@@ -264,7 +264,7 @@ const {
 
 "]" {
     if(comentarioAUX == 0){
-        parse_print("fecha colchetes: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("fecha colchetes: ",yytext);
         return FECHA_COL;
     }else{
         return COMENTARIO_T;
@@ -273,7 +273,7 @@ const {
 }
 "{" { 
     if(comentarioAUX == 0){
-        parse_print("abre chaves: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("abre chaves: ",yytext);
         return ABRE_CHAVE;
     }else{
         return COMENTARIO_T;
@@ -283,7 +283,7 @@ const {
 
 "}" { 
     if(comentarioAUX == 0){
-        parse_print("fecha chaves: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("fecha chaves: ",yytext);
         return FECHA_CHAVE;
     }else{
         return COMENTARIO_T;
@@ -293,7 +293,7 @@ const {
 
 "!"|"@"|"#"|"$"|"%"|"&"|":" { 
     if(comentarioAUX == 0){
-        parse_print("outro tipo: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("outro tipo: ",yytext);
         return OUTRO_T;
     }else{
         return COMENTARIO_T;
@@ -302,7 +302,7 @@ const {
 }
 "=="|"!="|"!=="|"<="|">="|"<"|">"|"and"|"or" {
     if(comentarioAUX == 0){
-        parse_print("Um operador lógico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Um operador lógico: ",yytext);
         return COMPARADOR_LOGICO;
     }else{
         return COMENTARIO_T;
@@ -312,7 +312,7 @@ const {
 
 "="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|=" {
     if(comentarioAUX == 0){
-    parse_print("Atribuição: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    parse_print("Atribuição: ",yytext);
     return T_ASSIGN;
     }else{
         return COMENTARIO_T;
@@ -368,7 +368,7 @@ const {
 
 "."|"," { 
     if(comentarioAUX == 0){
-        parse_print("divisor: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("divisor: ",yytext);
         return DIVISOR_P;
     }else{
         return COMENTARIO_T;
