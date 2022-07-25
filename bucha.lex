@@ -165,7 +165,7 @@ const {
 
 {DIGITO}+"."{DIGITO}* {
     if(comentarioAUX == 0){
-        parse_print( "Real: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
+        parse_print( "Real: ",yytext);
         return REAL;
     }else{
         return COMENTARIO_T;
@@ -174,7 +174,7 @@ const {
 }
 "->" {
     if(comentarioAUX == 0){
-    parse_print("Ponteiro de seta: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
+    parse_print("Ponteiro de seta: ",yytext);
       return REAL;
     }else{
         return T_ARROW_RIGHT;
