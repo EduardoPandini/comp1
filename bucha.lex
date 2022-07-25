@@ -5,6 +5,10 @@ unsigned int linha=1;
 unsigned int coluna=1;
 int comentarioAUX=0;
 #include "grammar.tab.h"
+
+void parse_print(const char* title,const char* yytext){
+    printf( "%s: ,%s, ,%zu, (%d) encontrado em ( %d : %d )\n",title, yytext,strlen(yytext),atoi( yytext ),linha,coluna );
+}
 %}
 
 
@@ -16,7 +20,7 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
 
 "#include" {
     if(comentarioAUX == 0){
-        parse_print("Incluindo algo ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("Incluindo algo ",yytext);
         return INCLUDE;
     }else{
         return COMENTARIO_T;
@@ -35,7 +39,7 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
 
 void|char|short|int|long|float|double|signed|unsigned {
     if(comentarioAUX == 0){
-        parse_print("Tipo primitivo ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("Tipo primitivo ",yytext);
         return T_PRIMITIVO;
     }else{
         return COMENTARIO_T;
@@ -45,7 +49,7 @@ void|char|short|int|long|float|double|signed|unsigned {
 
 ";" {
      if(comentarioAUX == 0){
-        parse_print("Ponto e virgula: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("Ponto e virgula: ",yytext);
         return PONTO_V;
     }else{
         return COMENTARIO_T;
@@ -65,16 +69,16 @@ void|char|short|int|long|float|double|signed|unsigned {
 
 return {
     if(comentarioAUX == 0){
-        parse_print("palavra reservada RETURN: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("palavra reservada RETURN: ",yytext);
         return PALAVRA_RETURN;
     }else{
         return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
-|print|read {
+print|read {
     if(comentarioAUX == 0){
-        parse_print("palavra reservada: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("palavra reservada: ",yytext);
         return PALAVRA_R;
     }else{
         return COMENTARIO_T;
@@ -142,7 +146,6 @@ do {
 const {
     if(comentarioAUX == 0){
         parse_print("Constante: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-        col += strlen(yytext);
     return T_CONST;
     }else{
         return COMENTARIO_T;
@@ -318,7 +321,7 @@ const {
 }
 "//"({TEXTO}|.)* {
     if(comentarioAUX == 0){
-        parse_print("Comentario de uma linha: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("Comentario de uma linha: ",yytext);
         return COMENTARIO_U;
     }else{
         return COMENTARIO_T;
@@ -343,7 +346,7 @@ const {
 
 "\""({TEXTO}|.)*"\"" {
     if(comentarioAUX == 0){
-        parse_print("String: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("String: ",yytext);
             return T_STRING;
     }else{
         return COMENTARIO_T;
