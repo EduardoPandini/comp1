@@ -4,6 +4,7 @@
 unsigned int linha=1;
 unsigned int coluna=1;
 int comentarioAUX=0;
+#include "grammar.tab.h"
 %}
 
 
@@ -13,148 +14,321 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
 
 %%
 
+"#include" {
+    if(comentarioAUX == 0){
+        parse_print("Incluindo algo ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        return INCLUDE;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+void|char|short|int|long|float|double|signed|unsigned {
+    if(comentarioAUX == 0){
+        parse_print("Tipo primitivo ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        return T_PRIMITIVO;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
 
 ";" {
      if(comentarioAUX == 0){
-        printf("Ponto e virgula: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("Ponto e virgula: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        return PONTO_V;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 } 
-bool|int|float|char|double {
-     if(comentarioAUX == 0){
-        printf("Tipo simples: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
+
 {DIGITO}+ {
     if(comentarioAUX == 0){
-        printf("Inteiro: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
-"FALSE"|"TRUE" {
-    if(comentarioAUX == 0){
-        printf("valor booleano: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
-return|print|read {
-    if(comentarioAUX == 0){
-        printf("palavra reservada: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
-    }
-    coluna += strlen(yytext);
-}
-while|for {
-     if(comentarioAUX == 0){
-        printf("laco de repeticao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Inteiro: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return INTEIRO;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
-if|else {
-     if(comentarioAUX == 0){
-        printf("operador logico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+return|print|read {
+    if(comentarioAUX == 0){
+        parse_print("palavra reservada: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        return PALAVRA_R;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
+while {
+     if(comentarioAUX == 0){
+        parse_print("laco WHILE: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return LACO_WHILE;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+for {
+     if(comentarioAUX == 0){
+        parse_print("laco FOR: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return LACO_FOR;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+when {
+    if(comentarioAUX == 0){
+    parse_print("Seletor when: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return T_SWITCH;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+if {
+     if(comentarioAUX == 0){
+        parse_print("operador logico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OP_LOGICO;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+else {
+     if(comentarioAUX == 0){
+        parse_print("condicional else: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OP_ELSE;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+do {
+    if(comentarioAUX == 0){
+        parse_print("Laço: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OPERADOR_DO;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+const {
+    if(comentarioAUX == 0){
+        parse_print("Constante: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        col += strlen(yytext);
+    return T_CONST;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
 {ID}+ {
     if(comentarioAUX == 0){
-        printf("identificador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("identificador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return IDENTIFICADOR;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
 {DIGITO}+"."{DIGITO}* {
     if(comentarioAUX == 0){
-        printf( "Real: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
+        parse_print( "Real: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
+        return REAL;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+"->" {
+    if(comentarioAUX == 0){
+    parse_print("Ponteiro de seta: ,%s, ,%zu, (%g) localizado em ( %d : %d )\n", yytext,strlen(yytext),atof( yytext ),linha,coluna );
+      return REAL;
+    }else{
+        return T_ARROW_RIGHT;
     }
     coluna += strlen(yytext);
 }
 
-"+"|"-"|or {
+"++"|"--" {
+    if(comentarioAUX == 0){
+        parse_print("Incremento: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    return T_INCREMENT;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+"+" {
      if(comentarioAUX == 0){
-        printf("operação de adição ou or: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de adição: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OPERACAO_AD;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
-"*"|"/"|and {
-    if(comentarioAUX == 0){
-        printf("operação de multiplicação ou and: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+"-" {
+     if(comentarioAUX == 0){
+        parse_print("operação de subtracao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OPERACAO_SUB;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
-"("|")" {
+"*" {
     if(comentarioAUX == 0){
-        printf("parenteses: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de multiplicação: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OPERACAO_MULT;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
-"["|"]" {
+"/" {
     if(comentarioAUX == 0){
-        printf("colchetes: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("operação de divisao: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OPERACAO_DIV;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
-"{"|"}" { 
+
+"(" {
     if(comentarioAUX == 0){
-        printf("chaves: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("ABERTURA DE parenteses: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return ABRE_PAR;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+")" {
+    if(comentarioAUX == 0){
+        parse_print("parenteses: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return FECHA_PAR;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+"[" {
+    if(comentarioAUX == 0){
+        parse_print("abre colchetes: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return ABRE_COL;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+"]" {
+    if(comentarioAUX == 0){
+        parse_print("fecha colchetes: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return FECHA_COL;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+"{" { 
+    if(comentarioAUX == 0){
+        parse_print("abre chaves: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return ABRE_CHAVE;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+
+"}" { 
+    if(comentarioAUX == 0){
+        parse_print("fecha chaves: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return FECHA_CHAVE;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
 "!"|"@"|"#"|"$"|"%"|"&"|":" { 
     if(comentarioAUX == 0){
-        printf("outro tipo: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("outro tipo: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OUTRO_T;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
-"<"|">"|"<="|">="|"<>"|"==" {
+"=="|"!="|"!=="|"<="|">="|"<"|">"|"and"|"or" {
     if(comentarioAUX == 0){
-        printf("comparador: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("Um operador lógico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return OPERADOR_LOGICO;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
 
-
-
-"=" {
+"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|=" {
     if(comentarioAUX == 0){
-        printf("definicao de valor: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    parse_print("Atribuição: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+    return T_ASSIGN;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
-
-
-
 "//"({TEXTO}|.)* {
     if(comentarioAUX == 0){
-        printf("Comentario de uma linha: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("Comentario de uma linha: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
     }
     coluna += strlen(yytext);
 }
 
 "/*" {
-    comentarioAUX=1;
-    coluna += strlen(yytext);
+    if(comentarioAUX == 0){
+        comentarioAUX=1;
+        coluna += strlen(yytext);
+        return ABRE_COM;
+    }else{
+        return COMENTARIO_T;
+    }
 }
 "*/" {
     comentarioAUX=0;
     coluna += strlen(yytext);
+    return FECHA_COM;
 }
 
 "\""({TEXTO}|.)*"\"" {
     if(comentarioAUX == 0){
-        printf("String: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        parse_print("String: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+            return T_STRING;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
-
-
-
 
 " " {
      
@@ -162,16 +336,18 @@ if|else {
 } 
 
 [\n]+ {
-     if(comentarioAUX == 0){
-		printf("quebra de linha\n");
-	}
+	parse_print("quebra de linha\n");
 	linha++;
 	coluna = 1;
+    return T_NEWLINE;
 } 
 
 "."|"," { 
     if(comentarioAUX == 0){
-        printf("divisor: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        parse_print("divisor: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
+        return DIVISOR_P;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }
