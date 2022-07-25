@@ -17,30 +17,25 @@ void yyerror(const char* s);
 
 /*tokens*/
 
-%token PONTO_V
-%token COMENTARIO_T
-%token INTEIRO REAL
-%token PALAVRA_R
-%token LACO_WHILE LACO_FOR
-%token IDENTIFICADOR
-%token OPERACAO_AD OPERACAO_SUB OPERACAO_MULT OPERACAO_DIV OPERACAO_AND
-%token ABRE_PAR FECHA_PAR
-%token ABRE_COL FECHA_COL
-%token ABRE_CHAVE FECHA_CHAVE
-%token OUTRO_T
-%token COMPARADOR_LOGICO OPERADOR_DO OP_LOGICO
-%token DEFINI_VALOR
-%token ABRE_COM
-%token FECHA_COM
-%token T_PRIMITIVO
-%token INCLUDE
-%token T_STRING
-%token T_NEWLINE
-%token T_SWITCH
-%token T_ARROW_RIGHT
-%token OP_ELSE
-%token COMENTARIO_U
+%token<ival> INTEIRO
+%token<fval> REAL
+%token T_DEFINE INCLUDE
 %token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_LEFT T_RIGHT
+%token T_NEWLINE
+%token T_PRIMITIVO PALAVRA_R T_CONST
+%token IDENTIFICADOR PONTO_V DIVISOR_P
+%token ABRE_CHAVE FECHA_CHAVE
+%token ABRE_PAR FECHA_PAR
+%token T_SWITCH LACO_WHILE LACO_FOR OPERADOR_DO
+%token OP_LOGICO
+%left OP_ELSE
+%token T_ASSIGN T_INCREMENT PALAVRA_RETURN COMPARADOR_LOGICO T_ARROW_RIGHT
+%token ABRE_COL FECHA_COL
+%token OPERACAO_AD OPERACAO_SUB OPERACAO_MULT OPERACAO_DIV
+%token ABRE_COM FECHA_COM
+%token T_STRING
+%token COMENTARIO_T COMENTARIO_U
+
 %type<fval> mixed_expr
 
 %start start_
@@ -197,6 +192,4 @@ void yyerror(const char* s) {
 	fprintf(stderr, "Erro de análise (sintática): -- %s --\n", s);
 	exit(1);
 }
-
-
 

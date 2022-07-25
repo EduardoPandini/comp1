@@ -24,6 +24,15 @@ TEXTO [A-Za-z0-9][A-Za-z0-9]*
     coluna += strlen(yytext);
 }
 
+"#define" {
+    if(comentarioAUX == 0){
+        parse_print("Definição",yytext);
+        return T_DEFINE;
+    }else{
+        return COMENTARIO_T;
+    }
+}
+
 void|char|short|int|long|float|double|signed|unsigned {
     if(comentarioAUX == 0){
         parse_print("Tipo primitivo ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
@@ -54,7 +63,16 @@ void|char|short|int|long|float|double|signed|unsigned {
     coluna += strlen(yytext);
 }
 
-return|print|read {
+return {
+    if(comentarioAUX == 0){
+        parse_print("palavra reservada RETURN: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        return PALAVRA_RETURN;
+    }else{
+        return COMENTARIO_T;
+    }
+    coluna += strlen(yytext);
+}
+|print|read {
     if(comentarioAUX == 0){
         parse_print("palavra reservada: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
         return PALAVRA_R;
@@ -282,7 +300,7 @@ const {
 "=="|"!="|"!=="|"<="|">="|"<"|">"|"and"|"or" {
     if(comentarioAUX == 0){
         parse_print("Um operador lógico: %s localizado em ( %d : %d )\n", yytext,linha,coluna );
-        return OPERADOR_LOGICO;
+        return COMPARADOR_LOGICO;
     }else{
         return COMENTARIO_T;
     }
