@@ -28,7 +28,7 @@ void yyerror(const char* s);
 %token ABRE_COL FECHA_COL
 %token ABRE_CHAVE FECHA_CHAVE
 %token OUTRO_T
-%token OPERADOR_LOGICO
+%token COMPARADOR_LOGICO OPERADOR_DO OP_LOGICO
 %token DEFINI_VALOR
 %token ABRE_COM
 %token FECHA_COM
@@ -119,14 +119,14 @@ condicao:
     condicao_3 condicao_2;
 
 condicao_2: |
-	OPERADOR_LOGICO condicao_3 condicao_2 { printf("\033[0;34mSintático condicional and/or \033[0m\n");}
+	COMPARADOR_LOGICO condicao_3 condicao_2 { printf("\033[0;34mSintático condicional and/or \033[0m\n");}
 ;
 
 condicao_3: 
-    mixed_expr OPERADOR_LOGICO mixed_expr { printf("\033[0;34mSintático condicional 1\033[0m\n");}
-  | PALAVRA_R OPERADOR_LOGICO mixed_expr { printf("\033[0;34mSintático condicional 2\033[0m\n");}
-  | mixed_expr OPERADOR_LOGICO PALAVRA_R { printf("\033[0;34mSintático condicional 3\033[0m\n");}
-  | PALAVRA_R OPERADOR_LOGICO PALAVRA_R { printf("\033[0;34mSintático condicional 4\033[0m\n");}
+    mixed_expr COMPARADOR_LOGICO mixed_expr { printf("\033[0;34mSintático condicional 1\033[0m\n");}
+  | PALAVRA_R COMPARADOR_LOGICO mixed_expr { printf("\033[0;34mSintático condicional 2\033[0m\n");}
+  | mixed_expr COMPARADOR_LOGICO PALAVRA_R { printf("\033[0;34mSintático condicional 3\033[0m\n");}
+  | PALAVRA_R COMPARADOR_LOGICO PALAVRA_R { printf("\033[0;34mSintático condicional 4\033[0m\n");}
   | ABRE_PAR condicao FECHA_PAR { printf("\033[0;34mSintático condicional 5\033[0m\n");};
 
 
