@@ -301,6 +301,9 @@ const {
 "//"({TEXTO}|.)* {
     if(comentarioAUX == 0){
         parse_print("Comentario de uma linha: ,%s, ,%zu, encontrado em ( %d : %d )\n", yytext,strlen(yytext),linha,coluna );
+        return COMENTARIO_U;
+    }else{
+        return COMENTARIO_T;
     }
     coluna += strlen(yytext);
 }

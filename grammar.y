@@ -39,6 +39,7 @@ void yyerror(const char* s);
 %token T_SWITCH
 %token T_ARROW_RIGHT
 %token OP_ELSE
+%token COMENTARIO_U
 %token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_LEFT T_RIGHT
 %type<fval> mixed_expr
 
@@ -142,9 +143,6 @@ cond_2: OP_LOGICO ABRE_PAR condicao FECHA_PAR function_block;
 
 
 
-
-
-
 declaracao: 
 	  PALAVRA_R T_ASSIGN mixed_expr { printf("\033[0;34mSintático atribuição sem primitivo\033[0m\n");}
 	| PALAVRA_R T_ASSIGN condicao { printf("\033[0;34mSintático atribuição sem primitivo\033[0m\n");}
@@ -160,11 +158,10 @@ incremento: PALAVRA_R T_INCREMENT {printf("\033[0;34mIncremento\033[0m\n");};
 
 
 
-
-comentario: T_SLC {printf("\033[0;34mSintatico Comentário unica linha\033[0m\n");}
+comentario: COMENTARIO_U {printf("\033[0;34mSintatico Comentário unica linha\033[0m\n");}
 	| ABRE_COM comm_ml FECHA_COM {printf("\033[0;34mSintatico Comentário multi-linhas\033[0m\n");};
 
-comm_ml: T_COMMENT_C comm_ml | T_NEWLINE comm_ml | ;
+comm_ml: COMENTARIO_T comm_ml | T_NEWLINE comm_ml | ;
 
 mixed_expr: REAL							{ $$ = $1; }
 	| INTEIRO								{ $$ = $1;}
@@ -178,45 +175,6 @@ mixed_expr: REAL							{ $$ = $1; }
 
 
 %%
-
-/*
-
-| expr T_PLUS mixed_expr				{ $$ = $1 + $3; }
-	| expr T_MINUS mixed_expr				{ $$ = $1 - $3; }
-	| expr T_MULTIPLY mixed_expr			{ $$ = $1 * $3; }
-	| expr T_DIVIDE mixed_expr				{ $$ = $1 / $3; }
-	| mixed_expr T_PLUS expr				{ $$ = $1 + $3; }
-	| mixed_expr T_MINUS expr				{ $$ = $1 - $3; }
-	| mixed_expr T_MULTIPLY expr			{ $$ = $1 * $3; }
-	| mixed_expr T_DIVIDE expr				{ $$ = $1 / $3; }
-	| expr T_DIVIDE expr						{ $$ = $1 / (float)$3; }
-
-
-comentario: T_SLC T_NEWLINE {printf("Sintatico Comentário unica linha\n");}
-	| ABRE_COM comm_ml FECHA_COM {printf("Sintatico Comentário multi-linhas\n");};
-
-comm_ml: INTEIRO comm_ml | REAL comm_ml | T_PLUS comm_ml | T_MINUS comm_ml | T_MULTIPLY comm_ml | T_DIVIDE comm_ml | T_LEFT comm_ml | T_RIGHT comm_ml | T_NEWLINE comm_ml | T_QUIT comm_ml | T_SWITCH comm_ml | ABRE_CHAVE comm_ml | ABRE_PAR comm_ml | FECHA_CHAVE comm_ml | FECHA_PAR comm_ml | T_ASSIGN comm_ml | OP_LOGICO comm_ml | PALAVRA_R comm_ml | PALAVRA_R comm_ml | T_RETURN comm_ml | OPERADOR_LOGICO comm_ml | T_PRIMITIVO comm_ml | T_DEFINE comm_ml | T_SLC comm_ml | T_STRING comm_ml | T_INCLUDE comm_ml | T_LIBRARY comm_ml | T_LEFT_POINTER comm_ml | T_RIGHT_POINTER comm_ml | OPERACAO_AD comm_ml | OPERACAO_SUB comm_ml | OPERACAO_MULT comm_ml | OPERACAO_DIV comm_ml | T_LOOP comm_ml | OP_ELSE comm_ml | T_EMPTY comm_ml | T_TAB comm_ml | T_CARRIER comm_ml | T_UNKNOWN comm_ml | PONTO_V comm_ml | T_PLUS comm_ml | T_MINUS comm_ml | T_MULTIPLY comm_ml | T_DIVIDE | ;
-
-expr: INTEIRO									{ $$ = $1; }
-	| expr T_PLUS expr						{ $$ = $1 + $3; }
-	| expr T_MINUS expr						{ $$ = $1 - $3; }
-	| expr T_MULTIPLY expr					{ $$ = $1 * $3; }
-	| T_LEFT expr T_RIGHT					{ $$ = $2; }
-	;
-
-funcao: PALAVRA_R ABRE_PAR FECHA_PAR function_block;
-
-block: FECHA_CHAVE PALAVRA_R ABRE_CHAVE;
-
-function_block: FECHA_CHAVE PALAVRA_R T_RETURN PALAVRA_R ABRE_CHAVE;
-
-line: T_NEWLINE
-	| mixed_expr T_NEWLINE					{ printf("\tResultado: %f\n", $1);}
-	| expr T_NEWLINE							{ printf("\tResultado: %i\n", $1); }
-	| T_QUIT T_NEWLINE						{ printf("Até mais...\n"); exit(0); }
-	;
-
-*/
 
 int main( argc, argv )
 int argc;
